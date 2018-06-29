@@ -2,7 +2,7 @@
 
 static void button_clicked(GtkWidget button, gpointer data)
 {
-	g_print("GAS is released!\n");
+	g_print("To the chopper!\n");
 }
 
 int main (int argc, char* argv[])
@@ -18,7 +18,7 @@ int main (int argc, char* argv[])
 	* gtk_element_action 
 	*/
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	button = gtk_button_new_with_label("Fart!");
+	button = gtk_button_new_with_label("Action!");
 	// label = gtk_label_new("Hello jackass");
 
 
@@ -39,6 +39,18 @@ int main (int argc, char* argv[])
 	*/
 	// gtk_container_add(GTK_CONTAINER(window), label);
 	gtk_container_add(GTK_CONTAINER(window), button);
+
+	// This function requests a given size to the window manager, depending on the requested size the manager could ignore it. 
+	// Alternatively, one could use gtk_window_set_size_request() and cast the GtkWidget "window" to a GtkWindow using the macro
+	// GTK_WINDOW(window).
+	// Parameter 1: widget to define size
+	// Parameter 2: x size
+	// Parameter 3: y size
+	gtk_widget_set_size_request(window, 400, 400);
+	gtk_widget_set_size_request(button, 100, 100);
+
+	// Set title of the window (this function is exclusive for a window, therefore casting is required)
+	gtk_window_set_title(GTK_WINDOW(window), "GTK+ tutorial");
 
 	// This function gives visibility to the created elements in this program.
 	// Always include before gtk_main()
