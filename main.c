@@ -1,8 +1,9 @@
 #include <gtk/gtk.h>
 
-static void button_clicked(GtkWidget button, gpointer data)
+static void button_clicked(GtkWidget *widget, gpointer data)
 {
-	g_print("To the chopper!\n");
+	//g_print("To the chopper!\n");
+	gtk_label_set_text(GTK_LABEL(data),"Giggity giggity!");
 }
 
 int main (int argc, char* argv[])
@@ -11,7 +12,7 @@ int main (int argc, char* argv[])
 	gtk_init(&argc, &argv);
 	
 	// Create a GTK item or widget (the GtkWidget type is used in almost any type of element)
-	GtkWidget *window, *label, *button;
+	GtkWidget *window, *label, *button, *hbox;
 	/* 
 	* Then you use the gtk_xxxx_new to create the element and make the widget point to it.
 	* It is worth noticing the syntax of GTK's API:
@@ -19,7 +20,15 @@ int main (int argc, char* argv[])
 	*/
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	button = gtk_button_new_with_label("Action!");
-	// label = gtk_label_new("Hello jackass");
+	label = gtk_label_new("Hello jackass");
+	
+	// This function initializes the box container
+	// Parameter 1: "homogeneous" parameter, set to TRUE if equal size will be assigned, FALSE otherwise
+	// Parameter 2: "spacing" parameter, define the amount of pixels for space between widgets
+	hbox = gtk_box_new(FALSE,0);
+	gtk_box_pack_start(GTK_BOX(hbox),label,0,0,0);
+	gtk_box_pack_start(GTK_BOX(hbox),button,0,0,0);
+
 
 
 	/*
@@ -30,7 +39,8 @@ int main (int argc, char* argv[])
 	* Parameter 4: parameter to pass to the callback function.
 	*/
 	g_signal_connect(window, "delete-event",G_CALLBACK(gtk_main_quit),NULL);
-	g_signal_connect(button, "clicked", G_CALLBACK(button_clicked),NULL);
+	g_signal_connect(button, "clicked", G_CALLBACK(button_clicked),label);
+
 	/*
 	* This function will add an element inside a container. A container can be any type of widget.
 	* In order to use this function, we have to cast the elements to gtk containers using the 
@@ -38,7 +48,7 @@ int main (int argc, char* argv[])
 	* Parameter 1: the receiving element cast into a container.
 	*/
 	// gtk_container_add(GTK_CONTAINER(window), label);
-	gtk_container_add(GTK_CONTAINER(window), button);
+	gtk_container_add(GTK_CONTAINER(window), hbox);
 
 	// This function requests a given size to the window manager, depending on the requested size the manager could ignore it. 
 	// Alternatively, one could use gtk_window_set_size_request() and cast the GtkWidget "window" to a GtkWindow using the macro
